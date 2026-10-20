@@ -1,0 +1,34 @@
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Test and coverage output
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/

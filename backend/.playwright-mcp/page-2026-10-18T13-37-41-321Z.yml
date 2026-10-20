@@ -1,0 +1,27 @@
+- generic [active] [ref=e1]:
+  - text: com.talentpact.action.login.bean.MenuDeeplink@1ec6f124
+  - img "background" [ref=e3]
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - img "PeopleStrong logo" [ref=e8]
+      - img "Client logo" [ref=e10]
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: UserName
+        - textbox [ref=e17]
+      - generic [ref=e18]:
+        - generic [ref=e19]: Password
+        - textbox [ref=e21]
+        - link "Forgot password?" [ref=e23] [cursor=pointer]:
+          - /url: "#"
+      - button "Continue" [ref=e25] [cursor=pointer]
+  - generic [ref=e28]:
+    - img "PeopleStrong logo" [ref=e30]
+    - generic [ref=e31]: © 2023 PeopleStrong
+    - generic [ref=e33]:
+      - link [ref=e35] [cursor=pointer]:
+        - /url: https://play.google.com/store/apps/details?id=com.peoplestrong.alt.organise
+        - img "Google playstore" [ref=e36]
+      - link [ref=e38] [cursor=pointer]:
+        - /url: http://apple.co/2gGFhBd
+        - img "Apple Play Store" [ref=e39]
