@@ -1,35 +1,36 @@
 
-import { useState } from "react"; 
+import { useState } from "react";
 import { Copy, Code2, ExternalLink, LoaderCircle, Sparkles } from "lucide-react";
-import "./App.css"; 
+import "./App.css";
 
-const API_URL = "http://127.0.0.1:8000/generate-test"; 
+const API_URL = "http://127.0.0.1:8000/generate-test";
 
 function App() {
   const [url, setUrl] = useState("");
-  const [requirement, setRequirement] = useState(""); 
+  const [requirement, setRequirement] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null); 
-  const [error, setError] = useState(""); 
-  const [copied, setCopied] = useState(false); 
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   async function handleGenerate(event) {
-    event.preventDefault(); 
-    setLoading(true); 
-    setResult(null); 
-    setError(""); 
-    setCopied(false); 
+    event.preventDefault();
+    setLoading(true);
+    setResult(null);
+    setError("");
+    setCopied(false);
     try {
       const response = await fetch(API_URL, {
-        method: "POST", 
-        headers: { "Content-Type": "application/json" }, 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          url: url.trim(), 
+          url: url.trim(),
           requirement: requirement.trim(),
         }),
       });
 
       const data = await response.json();
+      console.log("API response:", data);
 
       if (!response.ok || data.status !== "success") {
         const details = data.details;
@@ -38,44 +39,46 @@ function App() {
           details?.validation?.message ||
           data.message;
 
-        throw new Error(detailMessage || "Test generation failed."); 
+        throw new Error(detailMessage || "Test generation failed.");
       }
 
       const validatedCode = data.validation?.test_code;
 
-      if (!validatedCode || data.validation?.syntax_valid !== true) {
+      console.log("Validated code:", validatedCode);
+
+      if (!validatedCode || data.validation?.validation?.syntax_valid !== true) {
         throw new Error("The backend did not return syntactically validated code.");
       }
 
       setResult({
         code: validatedCode,
-        language: data.generated_code?.language || "python", 
+        language: data.generated_code?.language || "python",
         framework: data.generated_code?.framework || "playwright",
-        assumptions: data.generated_code?.assumptions || [], 
-        limitations: data.generated_code?.limitations || [], 
-        validation: data.validation, 
-        url: data.url, 
+        assumptions: data.generated_code?.assumptions || [],
+        limitations: data.generated_code?.limitations || [],
+        validation: data.validation,
+        url: data.url,
       });
     } catch (err) {
       setError(
         err instanceof TypeError
           ? "Cannot connect to the backend. Ensure FastAPI is running on port 8000."
           : err.message || "Something went wrong."
-      ); 
+      );
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   }
 
   async function handleCopy() {
-    if (!result?.code) return; 
+    if (!result?.code) return;
 
     try {
-      await navigator.clipboard.writeText(result.code); 
-      setCopied(true); 
-      window.setTimeout(() => setCopied(false), 2000); 
+      await navigator.clipboard.writeText(result.code);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      setError("Clipboard access failed. Please select and copy the code manually."); 
+      setError("Clipboard access failed. Please select and copy the code manually.");
     }
   }
 
